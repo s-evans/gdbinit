@@ -28,3 +28,16 @@ set verbose off
 set confirm off
 set disassembly-flavor intel
 
+# python pretty printers
+python 
+import sys
+import os
+sys.path.insert( 0, os.path.expanduser( '~/.gdb/bundle/stl' ) )
+sys.path.insert( 0, os.path.expanduser( '~/.gdb/bundle/stl/libstdcxx/v6' ) )
+from libstdcxx.v6.printers import register_libstdcxx_printers
+#register_libstdcxx_printers ( None )
+sys.path.insert( 0, os.path.expanduser( '~/.gdb/bundle/boost' ) )
+from boost.printers import register_printer_gen
+register_printer_gen ( None )
+end
+
