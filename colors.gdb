@@ -308,20 +308,6 @@ define info hookpost-address
 end
 
 #------------------------------------------------------------------------------#
-# checkpoints
-#------------------------------------------------------------------------------#
-
-define info hook-checkpoints
-    echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 || cat) &
-    setup-color-pipe
-end
-
-define info hookpost-checkpoints
-    cleanup-color-pipe
-end
-
-#------------------------------------------------------------------------------#
 # files
 #------------------------------------------------------------------------------#
 
