@@ -1,0 +1,5 @@
+.gdbinit.local
+.gdb/history
+*.DS_Store
+*.un~
+*.swp
