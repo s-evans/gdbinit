@@ -30,14 +30,32 @@ set disassembly-flavor intel
 
 # python pretty printers
 python 
+
 import sys
 import os
+
 sys.path.insert( 0, os.path.expanduser( '~/.gdb/bundle/stl' ) )
 sys.path.insert( 0, os.path.expanduser( '~/.gdb/bundle/stl/libstdcxx/v6' ) )
 from libstdcxx.v6.printers import register_libstdcxx_printers
 #register_libstdcxx_printers ( None )
+
 sys.path.insert( 0, os.path.expanduser( '~/.gdb/bundle/boost' ) )
 from boost.printers import register_printer_gen
 register_printer_gen ( None )
+
+sys.path.insert( 0, os.path.expanduser( '~/.gdb/bundle/qt5' ) )
+from qt5printers import register_printers
+register_printers (None)
+
+sys.path.insert( 0, os.path.expanduser( '~/.gdb/bundle/llvm' ) )
+from llvm.printers import register_llvm_printers
+register_llvm_printers (None)
+
+# TODO: Fix up registration to be like others 
+# TODO: Test
+sys.path.insert( 0, os.path.expanduser( '~/.gdb/bundle/generic' ) )
+from generic.printers import register_generic_printer
+register_generic_printer (None)
+
 end
 
