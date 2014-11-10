@@ -186,7 +186,7 @@ end
 
 define hook-disassemble
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -201,7 +201,7 @@ end
 
 define hook-list
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end 
 
@@ -215,7 +215,7 @@ end
 
 define info hook-all-registers
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -229,7 +229,7 @@ end
 
 define info hook-registers
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -243,7 +243,7 @@ end
 
 define info hook-breakpoints
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -257,7 +257,7 @@ end
 
 define info hook-program
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -271,7 +271,7 @@ end
 
 define info hook-proc
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -285,7 +285,7 @@ end
 
 define info hook-args
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -299,7 +299,7 @@ end
 
 define info hook-address
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -313,7 +313,7 @@ end
 
 define info hook-files
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -327,7 +327,7 @@ end
 
 define info hook-float
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -341,7 +341,7 @@ end
 
 define info hook-functions
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -355,7 +355,7 @@ end
 
 define info hook-signals
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -369,7 +369,7 @@ end
 
 define info hook-inferiors
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -383,7 +383,7 @@ end
 
 define info hook-line
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -397,7 +397,7 @@ end
 
 define info hook-macro
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -411,7 +411,7 @@ end
 
 define info hook-macros
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -425,7 +425,7 @@ end
 
 define info hook-os
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -439,7 +439,7 @@ end
 
 define hook-break
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -453,7 +453,7 @@ end
 
 define info hook-skip
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -467,7 +467,7 @@ end
 
 define info hook-sharedlibrary
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -481,7 +481,7 @@ end
 
 define info hook-stack
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -495,7 +495,7 @@ end
 
 define info hook-symbol
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -509,7 +509,7 @@ end
 
 define info hook-target
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -523,7 +523,7 @@ end
 
 define info hook-terminal
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -537,7 +537,7 @@ end
 
 define hook-step
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -551,7 +551,7 @@ end
 
 define hook-next
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -565,7 +565,7 @@ end
 
 define hook-finish
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -579,7 +579,7 @@ end
 
 define info hook-watchpoints
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -593,7 +593,7 @@ end
 
 define info hook-variables
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -607,7 +607,7 @@ end
 
 define info hook-types
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -621,7 +621,7 @@ end
 
 define info hook-tracepoints
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -635,7 +635,7 @@ end
 
 define info hook-tvariables
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
@@ -649,7 +649,7 @@ end
 
 define show hook-environment
     echo \n
-    shell cat ./.gdb-color-pipe | (type highlight >/dev/null 2>&1 && highlight --syntax=sh -s darkness -Oxterm256 || cat) &
+    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=sh --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=sh -s darkness -Oxterm256 ) || ( cat ) ) &
     setup-color-pipe
 end
 
