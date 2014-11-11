@@ -26,7 +26,7 @@
 #    running or calling down on frame 0) will screw up the output
 #    of any following commands. This happens because the post hook is never
 #    executed (no idea why) and so the logging remains enabled. To fix this,
-#    call cleanup-color-pipe.
+#    call cleanup_color_pipe.
 #
 #    Next, this script uses the logging functionality in gdb so if you're using
 #    it to record gdb outputs, this script will break your output whenever you
@@ -38,37 +38,36 @@
 #
 ################################################################################
 
-
 #------------------------------------------------------------------------------#
 # Utils
 #------------------------------------------------------------------------------#
 
-shell mkfifo ./.gdb-color-pipe
+shell mkfifo ./.gdb_color_pipe
 
-define setup-color-pipe
+define setup_color_pipe
     set logging redirect on
-    set logging on ./.gdb-color-pipe
+    set logging on ./.gdb_color_pipe
 end
 
-define cleanup-color-pipe
+define cleanup_color_pipe
     set logging off
     set logging redirect off
     shell sleep 0.1s
 end
 
-document cleanup-color-pipe
+document cleanup_color_pipe
     Disables command redirection and removes the color pipe file.
-    Syntax: cleanup-color-pipe
+    Syntax: cleanup_color_pipe
 end
 
-define do-generic-colors
+define do_generic_colors
     # 1. Function names and the class they belong to
     # 2. Function argument names
     # 3. Stack frame number
     # 4. Thread id colorization
     # 5. File path and line number
     echo \n
-    shell cat ./.gdb-color-pipe | \
+    shell cat ./.gdb_color_pipe | \
         sed -r "s_([^<])(\b([a-zA-Z0-9_]+::)?[a-zA-Z0-9_\.@]+)( ?)\(_\1$(tput setaf 6)$(tput bold)\2$(tput sgr0)\4(_g" | \
         sed -r "s_([a-zA-Z0-9_#]*)=_$(tput setaf 2)$(tput bold)\1$(tput sgr0)=_g" | \
         sed -r "s_^(#[0-9]*)_$(tput setaf 1)$(tput bold)\1$(tput sgr0)_" | \
@@ -76,8 +75,23 @@ define do-generic-colors
         sed -r "s_(\.*[/A-Za-z0-9\+_\.\-]*):([0-9]+)\$_$(tput setaf 4)\1$(tput sgr0):$(tput setaf 3)\2$(tput sgr0)_" & 
 end
 
+define do_cpp_colors
+    echo \n
+    shell cat ./.gdb_color_pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
+end
+
+define do_asm_colors
+    echo \n
+    shell cat ./.gdb_color_pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
+end
+
+define do_sh_colors
+    echo \n
+    shell cat ./.gdb_color_pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
+end
+
 define re
-    cleanup-color-pipe
+    cleanup_color_pipe
     echo \033[0m
 end 
 
@@ -86,9 +100,8 @@ document re
 end 
 
 define hook-quit
-    shell rm ./.gdb-color-pipe
+    shell rm ./.gdb_color_pipe
 end
-
 
 #------------------------------------------------------------------------------#
 # Prompt
@@ -102,82 +115,77 @@ end
 #------------------------------------------------------------------------------#
 
 define hook-backtrace
-    do-generic-colors
-    setup-color-pipe
+    do_generic_colors
+    setup_color_pipe
 end
 
 define hookpost-backtrace
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
-
 
 #------------------------------------------------------------------------------#
 # up
 #------------------------------------------------------------------------------#
 
 define hook-up
-    do-generic-colors
-    setup-color-pipe
+    do_generic_colors
+    setup_color_pipe
 end
 
 define hookpost-up
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
-
 
 #------------------------------------------------------------------------------#
 # down
 #------------------------------------------------------------------------------#
 
 define hook-down
-    do-generic-colors
-    setup-color-pipe
+    do_generic_colors
+    setup_color_pipe
 end
 
 define hookpost-down
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
-
 
 #------------------------------------------------------------------------------#
 # frame
 #------------------------------------------------------------------------------#
 
 define hook-frame
-    do-generic-colors
-    setup-color-pipe
+    do_generic_colors
+    setup_color_pipe
 end
 
 define hookpost-frame
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
-
 
 #------------------------------------------------------------------------------#
 # info threads
 #------------------------------------------------------------------------------#
 
 define info hook-threads
-    do-generic-colors
-    setup-color-pipe
+    do_generic_colors
+    setup_color_pipe
 end
 
 define info hookpost-threads
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
-
 
 #------------------------------------------------------------------------------#
 # thread
 #------------------------------------------------------------------------------#
 
 define hook-thread
-    do-generic-colors
-    setup-color-pipe
+    do_generic_colors
+    setup_color_pipe
 end
 
 define hookpost-thread
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -185,28 +193,25 @@ end
 #------------------------------------------------------------------------------#
 
 define hook-disassemble
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_asm_colors
+    setup_color_pipe
 end
 
 define hookpost-disassemble
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
-
 
 #------------------------------------------------------------------------------#
 # source listing
 #------------------------------------------------------------------------------#
 
 define hook-list
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_cpp_colors
+    setup_color_pipe
 end 
 
 define hookpost-list
-    cleanup-color-pipe
+    cleanup_color_pipe
 end 
 
 #------------------------------------------------------------------------------#
@@ -214,13 +219,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-all-registers
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_asm_colors
+    setup_color_pipe
 end
 
 define info hookpost-all-registers
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -228,13 +232,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-registers
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_asm_colors
+    setup_color_pipe
 end
 
 define info hookpost-registers
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -242,13 +245,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-breakpoints
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_asm_colors
+    setup_color_pipe
 end
 
 define info hookpost-breakpoints
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -256,13 +258,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-program
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_asm_colors
+    setup_color_pipe
 end
 
 define info hookpost-program
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -270,13 +271,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-proc
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_asm_colors
+    setup_color_pipe
 end
 
 define info hookpost-proc
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -284,13 +284,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-args
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_asm_colors
+    setup_color_pipe
 end
 
 define info hookpost-args
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -298,13 +297,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-address
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_asm_colors
+    setup_color_pipe
 end
 
 define info hookpost-address
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -312,13 +310,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-files
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_asm_colors
+    setup_color_pipe
 end
 
 define info hookpost-files
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -326,13 +323,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-float
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_asm_colors
+    setup_color_pipe
 end
 
 define info hookpost-float
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -340,13 +336,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-functions
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_asm_colors
+    setup_color_pipe
 end
 
 define info hookpost-functions
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -354,13 +349,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-signals
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_cpp_colors
+    setup_color_pipe
 end
 
 define info hookpost-signals
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -368,13 +362,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-inferiors
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_asm_colors
+    setup_color_pipe
 end
 
 define info hookpost-inferiors
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -382,13 +375,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-line
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_asm_colors
+    setup_color_pipe
 end
 
 define info hookpost-line
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -396,13 +388,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-macro
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_asm_colors
+    setup_color_pipe
 end
 
 define info hookpost-macro
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -410,13 +401,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-macros
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_asm_colors
+    setup_color_pipe
 end
 
 define info hookpost-macros
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -424,13 +414,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-os
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=asm --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=asm -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_asm_colors
+    setup_color_pipe
 end
 
 define info hookpost-os
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -438,13 +427,12 @@ end
 #------------------------------------------------------------------------------#
 
 define hook-break
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_cpp_colors
+    setup_color_pipe
 end
 
 define hookpost-break
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -452,13 +440,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-skip
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_cpp_colors
+    setup_color_pipe
 end
 
 define info hookpost-skip
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -466,13 +453,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-sharedlibrary
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_cpp_colors
+    setup_color_pipe
 end
 
 define info hookpost-sharedlibrary
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -480,13 +466,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-stack
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_cpp_colors
+    setup_color_pipe
 end
 
 define info hookpost-stack
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -494,13 +479,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-symbol
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_cpp_colors
+    setup_color_pipe
 end
 
 define info hookpost-symbol
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -508,13 +492,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-target
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_cpp_colors
+    setup_color_pipe
 end
 
 define info hookpost-target
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -522,13 +505,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-terminal
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_cpp_colors
+    setup_color_pipe
 end
 
 define info hookpost-terminal
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -536,13 +518,12 @@ end
 #------------------------------------------------------------------------------#
 
 define hook-step
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_cpp_colors
+    setup_color_pipe
 end
 
 define hookpost-step
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -550,13 +531,12 @@ end
 #------------------------------------------------------------------------------#
 
 define hook-next
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_cpp_colors
+    setup_color_pipe
 end
 
 define hookpost-next
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -564,13 +544,12 @@ end
 #------------------------------------------------------------------------------#
 
 define hook-finish
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_cpp_colors
+    setup_color_pipe
 end
 
 define hookpost-finish
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -578,13 +557,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-watchpoints
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_cpp_colors
+    setup_color_pipe
 end
 
 define info hookpost-watchpoints
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -592,13 +570,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-variables
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_cpp_colors
+    setup_color_pipe
 end
 
 define info hookpost-variables
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -606,13 +583,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-types
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_cpp_colors
+    setup_color_pipe
 end
 
 define info hookpost-types
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -620,13 +596,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-tracepoints
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_cpp_colors
+    setup_color_pipe
 end
 
 define info hookpost-tracepoints
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -634,13 +609,12 @@ end
 #------------------------------------------------------------------------------#
 
 define info hook-tvariables
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=cpp --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=cpp -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_cpp_colors
+    setup_color_pipe
 end
 
 define info hookpost-tvariables
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
 #------------------------------------------------------------------------------#
@@ -648,12 +622,11 @@ end
 #------------------------------------------------------------------------------#
 
 define show hook-environment
-    echo \n
-    shell cat ./.gdb-color-pipe | ( ( type source-highlight >/dev/null 2>&1 && source-highlight --src-lang=sh --out-format=esc ) || ( type highlight >/dev/null 2>&1 && highlight --syntax=sh -s darkness -Oxterm256 ) || ( cat ) ) &
-    setup-color-pipe
+    do_sh_colors
+    setup_color_pipe
 end
 
 define show hookpost-environment
-    cleanup-color-pipe
+    cleanup_color_pipe
 end
 
