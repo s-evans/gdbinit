@@ -630,3 +630,5 @@ define show hookpost-environment
     cleanup_color_pipe
 end
 
+# vim: set ft=gdb:
+
