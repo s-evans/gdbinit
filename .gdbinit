@@ -1,7 +1,6 @@
 
 # includes
 source ~/.gdb/stl-views.gdb
-source ~/.gdb/colors.gdb
 source ~/.gdb/.gdbinit.other
 
 # enable local gdbinit
@@ -15,6 +14,8 @@ set print static-members on
 set print vtbl on
 set print demangle on
 set print asm-demangle on
+set print array on
+set print array-indexes on
 set demangle-style gnu-v3
 
 # settings
@@ -46,16 +47,6 @@ register_printer_gen ( None )
 sys.path.insert( 0, os.path.expanduser( '~/.gdb/bundle/qt5' ) )
 from qt5printers import register_printers
 register_printers (None)
-
-sys.path.insert( 0, os.path.expanduser( '~/.gdb/bundle/llvm' ) )
-from llvm.printers import register_llvm_printers
-register_llvm_printers (None)
-
-# TODO: Fix up registration to be like others 
-# TODO: Test
-sys.path.insert( 0, os.path.expanduser( '~/.gdb/bundle/generic' ) )
-from generic.printers import register_generic_printer
-register_generic_printer (None)
 
 end
 
