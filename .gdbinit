@@ -1,7 +1,7 @@
 
 # includes
 source ~/.gdb/stl-views.gdb
-source ~/.gdb/.gdbinit.other
+# source ~/.gdb/.gdbinit.other
 
 # enable local gdbinit
 set auto-load local-gdbinit on
