@@ -29,6 +29,17 @@ set verbose off
 set confirm off
 set disassembly-flavor intel
 
+# commands
+define xxd
+dump binary memory dump.bin $arg0 $arg0+$arg1
+shell xxd dump.bin
+end
+
+define hexdump
+dump binary memory dump.bin $arg0 $arg0+$arg1
+shell hexdump -C dump.bin
+end
+
 # python pretty printers
 python 
 
