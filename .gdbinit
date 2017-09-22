@@ -29,6 +29,15 @@ set verbose off
 set confirm off
 set disassembly-flavor intel
 
+# aliases
+alias -- it = info threads
+alias -- ib = info breakpoints
+alias -- ia = info args
+alias -- ir = info registers
+alias -- ira = info registers all
+alias -- il = info locals
+alias -- all = thread apply all
+
 # commands
 define xxd
 dump binary memory dump.bin $arg0 $arg0+$arg1
