@@ -23,8 +23,6 @@ set history filename .gdb_history
 set history save on
 set history expansion on
 set history size 10000
-set height 0
-set width 0
 set verbose off
 set confirm off
 set disassembly-flavor intel
@@ -34,7 +32,6 @@ alias -- it = info threads
 alias -- ib = info breakpoints
 alias -- ia = info args
 alias -- ir = info registers
-alias -- ira = info registers all
 alias -- il = info locals
 alias -- all = thread apply all
 
